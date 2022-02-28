@@ -44,7 +44,7 @@ function Header() {
                 <div onClick={handleAuthentication} 
                     className='header__option'>
                     <span className='header__optionLineOne'>
-                        Hello Guest
+                        Hello {user ? user?.email : '' }
                     </span>
                     <span className='header__optionLineTwo'>
                       {user ? 'Sign Out' : 'Sign In' }
