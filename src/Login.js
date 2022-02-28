@@ -1,28 +1,36 @@
 
 import React, { useState } from 'react';
 import './Login.css'
-import { Link } from "react-router-dom";
+import { Link, useNavigate   } from "react-router-dom";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
 import { auth } from './firebase';
 
 
 function Login() {
-    
+    const navigate  = useNavigate ();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const signIn = e => {
         e.preventDefault()
+
+        signInWithEmailAndPassword(auth, email,password)
+        .then(result =>{
+            navigate('/')
+        })
+        .catch(error => console.log(error.message)) 
     }
 
     const register = e => {
         e.preventDefault()
 
-        auth
-            .createUserWithEmailAndPassword(email,password)
-            .then((auth) =>{
-                console.log(auth)
-            })
-            .catch(error => alert(error.message))
+        createUserWithEmailAndPassword(auth,email, password)
+        .then((result) => {
+            if (result) {
+                navigate('/')
+            }
+        })
+        .catch(error => console.log(error.message)) 
     }
 
     return (
@@ -30,7 +38,8 @@ function Login() {
             <Link to='/'>
                 <img
                     className="login__logo"
-                    src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/1024px-Amazon_logo.svg.png' 
+                    src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/1024px-Amazon_logo.svg.png'
+                    alt='' 
                 />
             </Link>
 
